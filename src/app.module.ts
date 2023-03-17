@@ -4,8 +4,10 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import envConfig from '../config/env';
-import { PostsModule } from './modules/posts/posts.module';
 import { HttpExceptionFilter } from './shared/exceptions/http-exception.filter';
+import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
+import { LoggingInterceptor } from './shared/interceptors/logging.interceptor';
+import { UserModule } from './modules/user/user.module';
 
 @Module({
   imports: [
@@ -28,13 +30,17 @@ import { HttpExceptionFilter } from './shared/exceptions/http-exception.filter';
         synchronize: true, // 根据实体自动创建数据库表，线上环境建议关闭
       }),
     }),
-    PostsModule,
+    UserModule,
   ],
   controllers: [AppController],
   providers: [
     AppService,
     {
-      provide: 'APP_FILTER',
+      provide: APP_INTERCEPTOR,
+      useClass: LoggingInterceptor,
+    },
+    {
+      provide: APP_FILTER,
       useClass: HttpExceptionFilter,
     },
   ],
