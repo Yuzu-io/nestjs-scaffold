@@ -2,9 +2,10 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { PostsModule } from './posts/posts.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import envConfig from '../config/env';
+import { PostsModule } from './modules/posts/posts.module';
+import { HttpExceptionFilter } from './shared/exceptions/http-exception.filter';
 
 @Module({
   imports: [
@@ -30,6 +31,12 @@ import envConfig from '../config/env';
     PostsModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: 'APP_FILTER',
+      useClass: HttpExceptionFilter,
+    },
+  ],
 })
 export class AppModule {}
