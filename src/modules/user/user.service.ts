@@ -17,19 +17,20 @@ export class UserService {
   }
 
   async findOneById(id: string) {
-    return await this.userRepository.findOne({
-      where: {
-        id: id,
-      },
-    });
+    return await this.userRepository
+      .createQueryBuilder()
+      .where('id=:id', { id })
+      .getOne();
   }
 
   async findByAccount(account: string) {
-    return await this.userRepository.findOne({
-      where: {
-        account: account,
-      },
-    });
+    console.log(account);
+
+    return await this.userRepository
+      .createQueryBuilder('user')
+      .addSelect('user.password')
+      .where('user.account=:account', { account })
+      .getOne();
   }
 
   async register(createUserDto: CreateUserDto) {

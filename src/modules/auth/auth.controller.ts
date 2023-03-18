@@ -1,11 +1,12 @@
 import {
   Body,
+  ClassSerializerInterceptor,
   Controller,
-  HttpCode,
-  HttpException,
-  HttpStatus,
   Post,
+  UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { CreateUserDto } from '../user/dto/user.dto';
 import { UserService } from '../user/user.service';
 import { AuthService } from './auth.service';
@@ -18,18 +19,15 @@ export class AuthController {
     private readonly userService: UserService,
   ) {}
 
-  @HttpCode(200)
+  @UseGuards(AuthGuard('local'))
+  @UseInterceptors(ClassSerializerInterceptor)
   @Post('login')
   async login(@Body() loginDto: LoginDto) {
-    const user = await this.authService.validateUser(loginDto);
-    if (!user) {
-      throw new HttpException('账号或密码错误', HttpStatus.UNAUTHORIZED);
-    }
-    const { accessToken } = await this.authService.login(loginDto);
-    return { accessToken };
+    return await this.authService.login(loginDto);
   }
 
   @Post('register')
+  @UseInterceptors(ClassSerializerInterceptor) // 类序列化程序拦截器
   async register(@Body() createUserDto: CreateUserDto) {
     return await this.userService.register(createUserDto);
   }

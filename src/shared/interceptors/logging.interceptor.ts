@@ -14,7 +14,6 @@ export class LoggingInterceptor implements NestInterceptor {
   ): Observable<any> | Promise<Observable<any>> {
     console.log('Before...');
 
-    const now = Date.now();
     return next.handle().pipe(
       map((data) => {
         return {

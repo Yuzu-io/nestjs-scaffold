@@ -1,8 +1,13 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { compare } from 'bcrypt';
+import { comparePassword } from 'src/shared/utils/bcrypt';
 import { UserService } from '../user/user.service';
 import { LoginDto } from './dto/login.dto';
+import { JwtPayload } from './interfaces/jwt-payload.interface';
 
 @Injectable()
 export class AuthService {
@@ -11,16 +16,12 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async validateUser(loginDto: LoginDto) {
-    const { account, password } = loginDto;
+  async validateUser(account: string) {
     const user = await this.userService.findByAccount(account);
-    const hashedPassword = user.password;
-    // 通过密码盐，加密传参，再与数据库里的比较，判断是否相等
-    if (user && (await compare(password, user.password))) {
-      const { password, ...result } = user;
-      return result;
+    if (user) {
+      return user;
     }
-    throw new UnauthorizedException('Invalid credentials');
+    return null;
   }
 
   async validateUserById(id: string) {
@@ -33,8 +34,13 @@ export class AuthService {
   }
 
   async login(loginDto: LoginDto) {
-    const payload = { loginDto };
+    const user = await this.validateUser(loginDto.account);
+    const payload: JwtPayload = {
+      sub: user.id,
+    };
     const accessToken = this.jwtService.sign(payload);
+    console.log(accessToken);
+
     return { accessToken };
   }
 }
