@@ -24,12 +24,10 @@ export class UserService {
   }
 
   async findByAccount(account: string) {
-    console.log(account);
-
     return await this.userRepository
-      .createQueryBuilder('user')
-      .addSelect('user.password')
-      .where('user.account=:account', { account })
+      .createQueryBuilder()
+      .addSelect('password')
+      .where('account=:account', { account })
       .getOne();
   }
 
