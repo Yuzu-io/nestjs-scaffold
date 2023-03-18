@@ -1,5 +1,6 @@
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as express from 'express';
 import { resolve } from 'path';
 import { AppModule } from './app.module';
@@ -19,6 +20,17 @@ async function bootstrap() {
       forbidNonWhitelisted: true, // 如果 DTO 中没有定义的属性被传递，抛出异常
     }),
   );
+
+  if (process.env.NODE_ENV !== 'production') {
+    // Swagger 配置
+    const config = new DocumentBuilder()
+      .setTitle('My API')
+      .setDescription('API description')
+      .setVersion('1.0')
+      .build();
+    const document = SwaggerModule.createDocument(app, config);
+    SwaggerModule.setup('api/doc', app, document);
+  }
 
   await app.listen(3000);
 }
