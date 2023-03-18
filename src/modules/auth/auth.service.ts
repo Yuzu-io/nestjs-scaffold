@@ -14,6 +14,8 @@ export class AuthService {
   async validateUser(loginDto: LoginDto) {
     const { account, password } = loginDto;
     const user = await this.userService.findByAccount(account);
+    const hashedPassword = user.password;
+    // 通过密码盐，加密传参，再与数据库里的比较，判断是否相等
     if (user && (await compare(password, user.password))) {
       const { password, ...result } = user;
       return result;
@@ -32,7 +34,7 @@ export class AuthService {
 
   async login(loginDto: LoginDto) {
     const payload = { loginDto };
-    const accessToken = await this.jwtService.signAsync(payload);
+    const accessToken = this.jwtService.sign(payload);
     return { accessToken };
   }
 }

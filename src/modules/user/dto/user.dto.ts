@@ -21,6 +21,7 @@ export class CreateUserDto {
   @IsString()
   password: string;
 
+  @IsOptional()
   @IsEnum(USER_SEX)
   @Transform(({ value }) => parseInt(value))
   sex: USER_SEX;
