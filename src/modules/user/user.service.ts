@@ -15,11 +15,27 @@ export class UserService {
     return await this.userRepository.find();
   }
 
+  async findOneById(id: string) {
+    return await this.userRepository.findOne({
+      where: {
+        id: id,
+      },
+    });
+  }
+
   async create(createUserDto: CreateUserDto) {
     const user = new UserEntity();
     user.account = createUserDto.account;
     user.password = createUserDto.password;
 
     return await this.userRepository.save(user);
+  }
+
+  async findByAccount(userName: string) {
+    return await this.userRepository.findOne({
+      where: {
+        userName: userName,
+      },
+    });
   }
 }

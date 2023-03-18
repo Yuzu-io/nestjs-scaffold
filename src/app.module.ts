@@ -8,6 +8,7 @@ import { HttpExceptionFilter } from './shared/exceptions/http-exception.filter';
 import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
 import { LoggingInterceptor } from './shared/interceptors/logging.interceptor';
 import { UserModule } from './modules/user/user.module';
+import { AuthModule } from './modules/auth/auth.module';
 
 @Module({
   imports: [
@@ -20,7 +21,8 @@ import { UserModule } from './modules/user/user.module';
       inject: [ConfigService],
       useFactory: async (configService: ConfigService) => ({
         type: 'mysql', // 数据库类型
-        entities: [], // 数据表实体
+        // entities: [], // 数据表实体
+        autoLoadEntities: true, // 自动加载实体
         host: configService.get('DB_HOST'), // 主机
         port: configService.get<number>('DB_PORT'), // 端口号
         username: configService.get('DB_USER'), // 用户名
@@ -31,6 +33,7 @@ import { UserModule } from './modules/user/user.module';
       }),
     }),
     UserModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [
