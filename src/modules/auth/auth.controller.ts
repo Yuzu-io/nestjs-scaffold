@@ -21,6 +21,12 @@ export class AuthController {
     private readonly userService: UserService,
   ) {}
 
+  @ApiOperation({ summary: '登录' })
+  @ApiBody({
+    description: '账号密码',
+    type: LoginDto,
+  })
+  @ApiResponse({ status: 200, description: '返回token' })
   @UseGuards(AuthGuard('local'))
   @UseInterceptors(ClassSerializerInterceptor)
   @Post('login')
