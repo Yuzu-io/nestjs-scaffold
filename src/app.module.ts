@@ -10,6 +10,7 @@ import { LoggingInterceptor } from './shared/interceptors/logging.interceptor';
 import { UserModule } from './modules/user/user.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { FileModule } from './modules/file/file.module';
+import { Logger } from './shared/logger/logger.service';
 
 @Module({
   imports: [
@@ -40,6 +41,7 @@ import { FileModule } from './modules/file/file.module';
   controllers: [AppController],
   providers: [
     AppService,
+    Logger,
     {
       provide: APP_INTERCEPTOR,
       useClass: LoggingInterceptor,
