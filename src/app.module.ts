@@ -9,6 +9,8 @@ import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
 import { LoggingInterceptor } from './shared/interceptors/logging.interceptor';
 import { UserModule } from './modules/user/user.module';
 import { AuthModule } from './modules/auth/auth.module';
+import { FileModule } from './modules/file/file.module';
+import { Logger } from './shared/logger/logger.service';
 
 @Module({
   imports: [
@@ -34,10 +36,12 @@ import { AuthModule } from './modules/auth/auth.module';
     }),
     UserModule,
     AuthModule,
+    FileModule,
   ],
   controllers: [AppController],
   providers: [
     AppService,
+    Logger,
     {
       provide: APP_INTERCEPTOR,
       useClass: LoggingInterceptor,
