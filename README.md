@@ -1,9 +1,9 @@
 <p align="center">
 
-  # This is the first version of my Nestjs scaffolding code
+  # This is the first version of my Nestjs scaffolding code.
   
-  ### Description
-  It simply encapsulates some functions, such as authentication and authorization functions, using class validator and class transformer for global data validation, configuring exception handlers and interceptors, using Swagger to generate API documents, using typeorm to link databases, adding log records, and adding file upload function modules
+  ### Description:
+  It simply encapsulates some functions, such as authentication and authorization functions, using class validator and class transformer for global data validation, configuring exception handlers and interceptors, using Swagger to generate API documents, using typeorm to link databases, adding log records, and adding file upload function modules.
 </p>
 
 
