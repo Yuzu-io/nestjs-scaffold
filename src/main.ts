@@ -3,9 +3,13 @@ import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as express from 'express';
 import { resolve } from 'path';
+import { initializeTransactionalContext } from 'typeorm-transactional';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
+  // 初始化 CLS 命名空间
+  initializeTransactionalContext();
+
   const app = await NestFactory.create(AppModule);
   app.setGlobalPrefix('api');
 

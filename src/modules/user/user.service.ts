@@ -2,6 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { hashPassword } from 'src/shared/utils/bcrypt';
 import { Repository } from 'typeorm';
+import { Transactional } from 'typeorm-transactional';
 import { CreateUserDto } from './dto/user.dto';
 import { UserEntity } from './entity/user.entity';
 
@@ -37,6 +38,7 @@ export class UserService {
       .getOne();
   }
 
+  @Transactional()
   async register(createUserDto: CreateUserDto) {
     const existUser = await this.findByAccount(createUserDto.account);
     const existEmail = await this.findByEmail(createUserDto.email);

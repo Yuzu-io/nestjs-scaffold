@@ -11,6 +11,8 @@ import { UserModule } from './modules/user/user.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { FileModule } from './modules/file/file.module';
 import { Logger } from './shared/logger/logger.service';
+import { DataSource, DataSourceOptions } from 'typeorm';
+import { addTransactionalDataSource } from 'typeorm-transactional';
 
 @Module({
   imports: [
@@ -33,6 +35,12 @@ import { Logger } from './shared/logger/logger.service';
         timezone: '+08:00', // 服务器上配置的时区
         synchronize: true, // 根据实体自动创建数据库表，线上环境建议关闭
       }),
+      dataSourceFactory: async (options: DataSourceOptions) => {
+        if (!options) {
+          throw new Error('Invalid options passed');
+        }
+        return addTransactionalDataSource(new DataSource(options));
+      },
     }),
     UserModule,
     AuthModule,
