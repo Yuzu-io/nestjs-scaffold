@@ -1,4 +1,15 @@
 <p align="center">
+
+  # This is the first version of my Nestjs scaffolding code.
+  
+  ### Description:
+  It simply encapsulates some functions, such as authentication and authorization functions, using class validator and class transformer for global data validation, configuring exception handlers and interceptors, using Swagger to generate API documents, using typeorm to link databases, adding log records, and adding file upload function modules.
+</p>
+
+
+
+
+<p align="center">
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
 </p>
 

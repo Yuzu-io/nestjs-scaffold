@@ -46,7 +46,7 @@ export class CreateUserDto {
   })
   @IsOptional()
   @IsEnum(USER_SEX)
-  @Transform(({ value }) => parseInt(value))
+  @Transform(({ value }) => String(value))
   sex: USER_SEX;
 
   @ApiProperty({
