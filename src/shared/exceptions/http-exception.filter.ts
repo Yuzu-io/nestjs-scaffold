@@ -6,9 +6,12 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 import { Request, Response } from 'express';
+import { Logger } from '../logger/logger.service';
 
 @Catch()
 export class HttpExceptionFilter implements ExceptionFilter {
+  constructor(private readonly logger: Logger) {}
+
   catch(exception: HttpException, host: ArgumentsHost) {
     const ctx = host.switchToHttp(); // 获取请求上下文
     const response = ctx.getResponse<Response>(); // 获取请求上下文中的 response 对象
@@ -30,6 +33,10 @@ export class HttpExceptionFilter implements ExceptionFilter {
       exception instanceof HttpException
         ? exception.message
         : 'Internal server error';
+
+    // 记录错误日志
+    const now = Date.now();
+    this.logger.error(`${exception}  ${Date.now() - now}ms`, exception.stack);
 
     // 设置错误信息
     const errorResponse = {
