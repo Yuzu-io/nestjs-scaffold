@@ -13,6 +13,7 @@ import { FileModule } from './modules/file/file.module';
 import { Logger } from './shared/logger/logger.service';
 import { DataSource, DataSourceOptions } from 'typeorm';
 import { addTransactionalDataSource } from 'typeorm-transactional';
+import { SocketModule } from './modules/socket/socket.module';
 
 @Module({
   imports: [
@@ -45,6 +46,7 @@ import { addTransactionalDataSource } from 'typeorm-transactional';
     UserModule,
     AuthModule,
     FileModule,
+    SocketModule,
   ],
   controllers: [AppController],
   providers: [
