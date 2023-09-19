@@ -5,6 +5,7 @@ import * as express from 'express';
 import { resolve } from 'path';
 import { initializeTransactionalContext } from 'typeorm-transactional';
 import { AppModule } from './app.module';
+import { WsAdapter } from '@nestjs/platform-ws';
 
 async function bootstrap() {
   // 初始化 CLS 命名空间
@@ -36,6 +37,9 @@ async function bootstrap() {
     const document = SwaggerModule.createDocument(app, config);
     SwaggerModule.setup('api/doc', app, document);
   }
+
+  // 使用ws适配器
+  app.useWebSocketAdapter(new WsAdapter(app))
 
   await app.listen(3000);
 }
